@@ -12,10 +12,6 @@
         <article class="hero-card">
             <span class="eyebrow">University Campus Navigator</span>
             <h1>Find rooms, events, and student activity in one map.</h1>
-            <p>
-                This prototype is built to support a four-image campus map. Each room hotspot is interactive, shows its current activities,
-                and gives students a quick way to register interest or propose a new activity directly inside that room.
-            </p>
             <div class="hero-actions">
                 <button class="button primary" type="button" id="jumpToMap">Explore the map</button>
                 <button class="button secondary" type="button" id="jumpToForm">Add an activity</button>
@@ -43,20 +39,10 @@
 
     <section class="layout">
         <article class="map-panel" id="mapSection">
-            <div class="panel-header">
-                <div>
-                    <h2>Interactive campus map</h2>
-                    <p>
-                        Replace each placeholder row with one of the four real map images. The room buttons stay absolutely positioned above the full map,
-                        so users can hover or click a room without changing the image layout.
-                    </p>
-                </div>
-            </div>
-
             <div class="campus-map-shell">
                 <div class="map-grid" aria-hidden="true">
                     <figure class="map-tile">
-                        <img class="map-image" src="/dk.via.hackathon/Image/GroundFloor.png" alt="Campus map row 1" data-map-slot="1" usemap="#ground-floor-map">
+                        <img class="map-image" src="/dk.via.hackathon/Image/GroundFloor.png" data-map-slot="1" usemap="#ground-floor-map">
                         <div class="map-marker-layer" aria-hidden="true"></div>
                         <map name="ground-floor-map">
                             <area target="" alt="Auditorium 1" title="Auditorium 1" href="#" coords="669,556,759,709" shape="rect">
@@ -70,12 +56,11 @@
                             <area target="" alt="School Kitchen" title="School Kitchen" href="#" coords="272,493,189,445" shape="rect">
                         </map>
                         <figcaption class="map-tile-label">
-                            <strong>Map image row 1</strong>
-                            <span>Add the first campus map image in the `src` attribute.</span>
+                            <strong>Ground Floor</strong>
                         </figcaption>
                     </figure>
                     <figure class="map-tile">
-                        <img class="map-image" src="/dk.via.hackathon/Image/2ndFloor.png" alt="Campus map row 2" data-map-slot="2" usemap="#second-floor-map">
+                        <img class="map-image" src="/dk.via.hackathon/Image/2ndFloor.png" data-map-slot="2" usemap="#second-floor-map">
                         <div class="map-marker-layer" aria-hidden="true"></div>
                         <map name="second-floor-map">
                             <area target="" alt="Hub C" title="Hub C" href="#" coords="377,386,504,390,447,288,377,325" shape="poly">
@@ -88,12 +73,11 @@
                             <area target="" alt="B02.07" title="B02.07" href="#" coords="165,471,225,473,227,518,163,520" shape="poly">
                         </map>
                         <figcaption class="map-tile-label">
-                            <strong>Map image row 2</strong>
-                            <span>Add the second campus map image in the `src` attribute.</span>
+                            <strong>Second Floor</strong>
                         </figcaption>
                     </figure>
                     <figure class="map-tile">
-                        <img class="map-image" src="/dk.via.hackathon/Image/3rdFloor.png" alt="Campus map row 3" data-map-slot="3" usemap="#third-floor-map">
+                        <img class="map-image" src="/dk.via.hackathon/Image/3rdFloor.png" data-map-slot="3" usemap="#third-floor-map">
                         <div class="map-marker-layer" aria-hidden="true"></div>
                         <map name="third-floor-map">
                             <area target="" alt="C03.17" title="C03.17" href="#" coords="432,237,25" shape="circle">
@@ -113,8 +97,7 @@
                             <area target="" alt="B03.10" title="B03.10" href="#" coords="80,428,169,429,167,363,81,361,81,382" shape="poly">
                         </map>
                         <figcaption class="map-tile-label">
-                            <strong>Map image row 3</strong>
-                            <span>Add the third campus map image in the `src` attribute.</span>
+                            <strong>Third Floor</strong>
                         </figcaption>
                     </figure>
                     <figure class="map-tile">
@@ -135,8 +118,7 @@
                             <area target="" alt="B04.01" title="B04.01" href="#" coords="315,538,256,599,302,648,363,586" shape="poly">
                         </map>
                         <figcaption class="map-tile-label">
-                            <strong>Map image row 4</strong>
-                            <span>Add the fourth campus map image in the `src` attribute.</span>
+                            <strong>Fourth Floor</strong>
                         </figcaption>
                     </figure>
                 </div>
@@ -153,7 +135,6 @@
             <div class="panel-header">
                 <div>
                     <h2>Browse Campus Activities</h2>
-                    <p>Choose any mapped area to jump to a fuller activity description below the map.</p>
                 </div>
             </div>
             <div class="activity-button-grid" id="activityButtons"></div>
@@ -204,26 +185,21 @@
             <div class="panel-header">
                 <div>
                     <h2>Add a room activity</h2>
-                    <p>Create a new campus activity and attach it directly to the selected room.</p>
                 </div>
             </div>
 
             <form class="form-grid" id="activityForm">
                 <div class="field">
-                    <label for="activityTitle">Activity title</label>
-                    <input id="activityTitle" name="activityTitle" type="text" placeholder="Chess meetup, robotics lab, open lecture..." required>
+                    <label for="activityTitle">Title</label>
+                    <input id="activityTitle" name="activityTitle" type="text" placeholder="Activity" required>
                 </div>
                 <div class="field">
                     <label for="activityTime">Date and time</label>
-                    <input id="activityTime" name="activityTime" type="text" placeholder="Friday, 14:00 - 16:00" required>
-                </div>
-                <div class="field">
-                    <label for="activityType">Activity type</label>
-                    <input id="activityType" name="activityType" type="text" placeholder="Workshop, seminar, club session..." required>
+                    <input id="activityTime" name="activityTime" type="text" placeholder="Date and time" required>
                 </div>
                 <div class="field">
                     <label for="activityDescription">Details</label>
-                    <textarea id="activityDescription" name="activityDescription" placeholder="What happens in this activity, who is it for, and what should students know before joining?" required></textarea>
+                    <textarea id="activityDescription" name="activityDescription" placeholder="Short description" required></textarea>
                 </div>
                 <button class="button primary" type="submit">Add activity to selected room</button>
             </form>
