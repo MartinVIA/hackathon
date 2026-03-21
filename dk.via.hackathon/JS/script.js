@@ -1,33 +1,33 @@
-const activityExtras = {
-  "Auditorium 1":  { club: "Debate club",             schedule: "Tuesday & Thursday, 18:00", details: "Place for students to come together and debate about stuff, like whether milk or cereal goes first in the bowl." },
-  "Oasis":         { club: "Chess club",   schedule: "Wednesday, 16:00",          details: "Chess club for people to come together and mate." },
-  "Makerspace":    { club: "3D printing and vinyl-cutting",  schedule: "Tuesday, 12:00",             details: "Students can cook up interesting stuff with their imagination." },
-  "Musical Room":  { club: "Mongolian throat singing", schedule: "Monday, 00:00",             details: "Students can practice the ancient art of mongolian throat singing at midnight." },
-  "Dramatorium":   { club: "Drama Club",        schedule: "Thursday, 17:00",           details: "For the drama kings and queens of the world to shine bright like a diamond." },
-  "Atrium":        { club: "Hot dog eating contest",           schedule: "Wednesday 12:00",            details: "Who can eat the most hotdogs at VIA? Come find out this wednesday!" },
-  "Canteen Bar":   { club: "Friday Bar",   schedule: "Friday, of course",       details: "Drink your academic stress away with other stressed out students this friday :)" },
-  "Outdoors":      { club: "Football",    schedule: "Afternoons and weekends",   details: "Kick around a footbal and have a great time in the summer." },
-  "School Kitchen":{ club: "Cooking club",         schedule: "Tuesday, 18:00",          details: "Come learn how to make yummy food." },
-  "Hub C":         { club: "Coding Club",             schedule: "Monday, 16:00",             details: "For software students struggling with programming work, come by Hub-C to get help from fellow students." },
-  "Hub A":         { club: "Architecture enthusiasts club",        schedule: "Monday, 15:00",                    details: "For architecture students struggling to build a house, come by Hub.B to get help from proffesional minecraft players." },
-  "Hub B":         { club: "Pokemon enthusiasts club",        schedule: "Friday 17:00",                    details: "Geek out over pokemons with fellow pokemon enthusiasts! " },
-  "Library":       { club: "Who can read a book backwards the fastest?",      schedule: "Thursday, 13:00",                details: "Competition to see who can read a book backwards the fastest." },
-  "Workshop Room": { club: "Practical Sessions",      schedule: "Weekly",                    details: "This room supports hands-on workshops, guided practicals, and small-group skill-building sessions." },
-  "XR Lab":        { club: "XR and Immersive Tech",   schedule: "Thursday, 15:00",           details: "Students can find out about cool futuristic tech stuff wow." },
+const activities = {
+  "Auditorium 1": { club: "Debate club", schedule: "Tuesday & Thursday, 18:00", details: "Place for students to come together and debate about stuff, like whether milk or cereal goes first in the bowl." },
+  "Oasis":{ club: "Chess club", schedule: "Wednesday, 16:00", details: "Chess club for people to come together and mate." },
+  "Makerspace": { club: "3D printing and vinyl-cutting", schedule: "Tuesday, 12:00", details: "Students can cook up interesting stuff with their imagination." },
+  "Musical Room": { club: "Mongolian throat singing", schedule: "Monday, 00:00", details: "Students can practice the ancient art of mongolian throat singing at midnight." },
+  "Dramatorium": { club: "Drama Club", schedule: "Thursday, 17:00", details: "For the drama kings and queens of the world to shine bright like a diamond." },
+  "Atrium": { club: "Hot dog eating contest", schedule: "Wednesday 12:00", details: "Who can eat the most hotdogs at VIA? Come find out this wednesday!" },
+  "Canteen Bar": { club: "Friday Bar", schedule: "Friday, of course", details: "Drink your academic stress away with other stressed out students this friday :)" },
+  "Outdoors": { club: "Football", schedule: "Afternoons and weekends", details: "Kick around a footbal and have a great time in the summer." },
+  "School Kitchen":{ club: "Cooking club", schedule: "Tuesday, 18:00", details: "Come learn how to make yummy food." },
+  "Hub C": { club: "Coding Club", schedule: "Monday, 16:00",details: "For software students struggling with programming work, come by Hub-C to get help from fellow students." },
+  "Hub A": { club: "Architecture enthusiasts club", schedule: "Monday, 15:00", details: "For architecture students struggling to build a house, come by Hub.B to get help from proffesional minecraft players." },
+  "Hub B": { club: "Pokemon enthusiasts club", schedule: "Friday 17:00", details: "Geek out over pokemons with fellow pokemon enthusiasts! " },
+  "Library": { club: "Who can read a book backwards the fastest?", schedule: "Thursday, 13:00", details: "Competition to see who can read a book backwards the fastest." },
+  "Workshop Room": { club: "Practical Sessions", schedule: "Weekly", details: "This room supports hands-on workshops, guided practicals, and small-group skill-building sessions." },
+  "XR Lab": { club: "XR and Immersive Tech", schedule: "Thursday, 15:00", details: "Students can find out about cool futuristic tech stuff wow." },
 };
 
-const areaTooltip         = document.getElementById("areaTooltip");
+const areaTooltip = document.getElementById("areaTooltip");
 const activityDetailPanel = document.getElementById("activityDetailPanel");
 const activityDetailTitle = document.getElementById("activityDetailTitle");
 const activityDetailSubtitle = document.getElementById("activityDetailSubtitle");
-const activityDetailBody  = document.getElementById("activityDetailBody");
+const activityDetailBody = document.getElementById("activityDetailBody");
 
 function showActivityDetail(label) {
-  const extra = activityExtras[label] || {
+  const extra = activities[label] || {
     club: " ",
     schedule: " ",
-  };
-  activityDetailTitle.textContent    = label;
+  };//This is only used if no schedule of club is given
+  activityDetailTitle.textContent = label;
   activityDetailSubtitle.textContent = extra.details;
   activityDetailBody.innerHTML = `
     <article class="activity-detail-card">
@@ -43,6 +43,10 @@ function getAreaCenter(coords, shape) {
   const values = coords.split(",").map(Number);
   if (shape === "circle") return { x: values[0], y: values[1] };
   if (shape === "rect")   return { x: (values[0] + values[2]) / 2, y: (values[1] + values[3]) / 2 };
+  /*polygon shapes use loop using the bounding box approach to get the approx centre position for the marker
+ It finds the min/max for all axis, then returns the midpoint of that box,
+ this could mean that sometimes the true centroid is outside the polygon, however for our UI purposes, this works perfectly
+  */
   let minX = values[0], maxX = values[0], minY = values[1], maxY = values[1];
   for (let i = 0; i < values.length; i += 2) {
     minX = Math.min(minX, values[i]);   maxX = Math.max(maxX, values[i]);
@@ -53,13 +57,22 @@ function getAreaCenter(coords, shape) {
 function scaleAreaMap(image) {
   const map = document.querySelector(`map[name="${image.useMap.replace("#", "")}"]`);
   const markerLayer = image.parentElement.querySelector(".map-marker-layer");
+
+  //This, so the markers are placed differently if the image is render on smaller, or larger scale
   const scaleX = image.clientWidth  / image.naturalWidth;
   const scaleY = image.clientHeight / image.naturalHeight;
   markerLayer.innerHTML = "";
-
+/*Now this is the tricky part
+1. Uses area.alt as the label (falls back to "Area 1", "Area 2", etc.)
+2. Calls getAreaCenter() to find the center point
+3. Multiplies by the scale ratio so the marker lands in the right spot regardless of display size
+4. Attaches on click EventListener
+5. Appends the marker <span> to the overlay layer
+This way the markers are repositioned correcty at any size, by also adding a window EventListener
+*/
   map.querySelectorAll("area").forEach((area, index) => {
     const label  = area.alt || `Area ${index + 1}`;
-    const center = getAreaCenter(area.coords, area.shape.toLowerCase());
+    const center = getAreaCenter(area.coords, area.shape);
     const marker = document.createElement("span");
     marker.className   = "map-marker";
     marker.textContent = label;
@@ -73,6 +86,7 @@ function scaleAreaMap(image) {
 function scaleAllImageMaps() {
   document.querySelectorAll(".map-image").forEach(scaleAreaMap);
 }
+
 window.addEventListener("resize", scaleAllImageMaps);
 document.querySelectorAll(".map-image").forEach(img => img.addEventListener("load", scaleAllImageMaps));
 scaleAllImageMaps();

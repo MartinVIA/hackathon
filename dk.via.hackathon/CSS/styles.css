@@ -2,21 +2,24 @@
   --ink:    #163229;
   --muted:  #5f756c;
   --accent: #c56b2d;
-  --line:   rgba(22, 50, 41, 0.12);
-  --bg:     #eef3ea;
 }
-
+#bg {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+}
 * { box-sizing: border-box; }
 
 body {
   margin: 0;
   font-family: Georgia, serif;
   color: var(--ink);
-  background: linear-gradient(180deg, #f9f7ef, var(--bg));
   min-height: 100vh;
 }
-
-h1, h2, h3, p { margin: 0; }
 
 button, input, textarea { font: inherit; }
 
@@ -27,7 +30,6 @@ button, input, textarea { font: inherit; }
 }
 
 .map-panel {
-  background: rgba(255, 253, 247, 0.9);
   border: 1px solid var(--line);
   border-radius: 24px;
   padding: 24px;
@@ -38,7 +40,6 @@ button, input, textarea { font: inherit; }
   overflow: hidden;
   border: 1px solid var(--line);
 }
-
 .map-grid {
   display: grid;
   gap: 16px;
@@ -74,7 +75,6 @@ button, input, textarea { font: inherit; }
   font-size: 0.66rem;
   white-space: nowrap;
   cursor: pointer;
-  transition: background 180ms;
 }
 
 .map-marker:hover,
@@ -168,9 +168,7 @@ button, input, textarea { font: inherit; }
 
 /* HTML form stuff*/
 .form-grid { display: grid; gap: 12px; }
-
 .field { display: grid; gap: 6px; }
-
 label { font-size: 0.9rem; color: var(--muted); }
 
 input, textarea {
@@ -181,10 +179,8 @@ input, textarea {
   padding: 10px 14px;
   color: var(--ink);
 }
-
 textarea { min-height: 88px; resize: vertical; }
 
-/* Stuff for buttons */
 .button {
   border: 0;
   border-radius: 999px;
